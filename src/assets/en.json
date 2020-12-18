@@ -1,5 +1,15 @@
 {
-    "cancel": "Cancel",
-    "hello_world": "Hello World",
-    "go_back_to_select_language": "Go Back to Select Language"
+    "CANCEL": "Cancel",
+    "HELLO_WORLD": "Hello World",
+    "DESCRIPTION": "Text in this app will change according to the language selected",
+    "go_to_select_language": "Go to Select Language",
+    "PROFILE": "Profile",
+    "MENU": "Menu",
+    "LOG_OUT":"Log-out",
+    "SELECT_PREF_LANG": "Please select your preferred language",
+    "CONTINUE": "Continue",
+    "LOADING_TRANSLATION": "Loading selected language",
+    "LOADING_LANGUAGES": "Loading available languages",
+    "SELECT_LANGUAGE": "Select Language",
+    "HOME": "Home"
 }

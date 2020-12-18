@@ -1,15 +1,12 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ActivityIndicator } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import { connect } from 'react-redux';
-import { languageService } from '../../services/language/LanguageService';
 import { callGetAllLanguages, callGetTranslation } from './action';
 import { Picker } from '@react-native-picker/picker';
 
 class SelectLanguage extends React.Component {
     state = {
-        selectedLanguage: null
+        selectedLanguage: 'english'
     }
     render() {
         if(this.props.loadingTranslation) {
@@ -18,10 +15,10 @@ class SelectLanguage extends React.Component {
         return (
             <View style={style.container}>
                 <Text style={style.title}>
-                    Please select your preferred language
+                    {this.props.translation["SELECT_PREF_LANG"]}
                  </Text>
                 {this.renderLanguagePicker()}
-                <Button title="Continue" onPress={this.onPressContinue} />
+                <Button title={this.props.translation["CONTINUE"]} onPress={this.onPressContinue} />
             </View>
         )
 
@@ -32,7 +29,7 @@ class SelectLanguage extends React.Component {
         return (
             <View style={style.loadingTranslationContainer}>
                 <ActivityIndicator size="large"/>
-                <Text style={style.loadingText}>Loading selected language</Text>
+                <Text style={style.loadingText}>{this.props.translation["LOADING_TRANSLATION"]}</Text>
             </View>
         )
     }
@@ -42,7 +39,7 @@ class SelectLanguage extends React.Component {
             return (
                 <View style={style.loaderContainer}>
                     <ActivityIndicator size="large"/>
-                    <Text style={style.loadingText}>Loading available languages</Text>
+                    <Text style={style.loadingText}>{this.props.translation["LOADING_LANGUAGES"]}</Text>
                 </View>
             )
         } else {
@@ -63,7 +60,7 @@ class SelectLanguage extends React.Component {
 
     onPressContinue = () => {
         // Get translation data from api
-        this.props.callGetTranslation();
+        this.props.callGetTranslation(this.state.selectedLanguage);
         // this.props.navigation.replace("Home")
     }
 
@@ -75,6 +72,7 @@ class SelectLanguage extends React.Component {
 
     componentDidMount() {
         this.props.callGetAllLanguages();
+        this.props.navigation.setOptions({title: this.props.translation["SELECT_LANGUAGE"]})
     }
 
 }
@@ -107,7 +105,8 @@ const mapStateToProps = state => {
     return {
         languageList: state.LanguageReducer.languageList,
         loadingLanguages: state.LanguageReducer.loadingLanguages,
-        loadingTranslation: state.LanguageReducer.loadingTranslation
+        loadingTranslation: state.LanguageReducer.loadingTranslation,
+        translation: state.LanguageReducer.translation
     }
 }
 
