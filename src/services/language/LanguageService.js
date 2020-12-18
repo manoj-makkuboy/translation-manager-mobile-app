@@ -13,8 +13,8 @@ class LanguageService {
     }
 
     getTranslation(langCode) {
-        // return BaseApiService.get(`${API_GET_TRANSLATION}/${langCode}`)
-        return BaseApiService.get(`${API_GET_TRANSLATION}`)
+        return BaseApiService.get(`${API_GET_TRANSLATION}/${langCode}`)
+        // return BaseApiService.get(`${API_GET_TRANSLATION}`)              
     }
 }
 

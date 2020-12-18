@@ -86,7 +86,8 @@ const style = StyleSheet.create({
         fontSize: 36,
         color: 'black',
         fontWeight: 'bold',
-        marginStart: 16
+        marginStart: 16,
+        flex: 1
     },
     profile: {
         fontSize: 16,
