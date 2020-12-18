@@ -1,41 +1,70 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, ActivityIndicator } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { connect } from 'react-redux';
 import { languageService } from '../../services/language/LanguageService';
-import { callGetAllLanguages } from './action';
-import {Picker} from '@react-native-picker/picker';
+import { callGetAllLanguages, callGetTranslation } from './action';
+import { Picker } from '@react-native-picker/picker';
 
 class SelectLanguage extends React.Component {
     state = {
         selectedLanguage: null
     }
     render() {
-        let allPickerItems = this.getAllPickerItem();
+        if(this.props.loadingTranslation) {
+            return this.renderLoader();
+        }
         return (
             <View style={style.container}>
                 <Text style={style.title}>
                     Please select your preferred language
                  </Text>
-                <Picker
-                    selectedValue={this.state.selectedLanguage}
-                    style={{ height: 200, width: '80%',}}
-                    mode="dropdown"
-                    onValueChange={itemValue =>
-                        this.setState({ selectedLanguage: itemValue })
-                    }>
-                    {allPickerItems}
-                </Picker>
-                <Button title="Continue" onPress={this.onPressContinue}/>
+                {this.renderLanguagePicker()}
+                <Button title="Continue" onPress={this.onPressContinue} />
             </View>
         )
 
     }
 
 
+    renderLoader = () => {
+        return (
+            <View style={style.loadingTranslationContainer}>
+                <ActivityIndicator size="large"/>
+                <Text style={style.loadingText}>Loading selected language</Text>
+            </View>
+        )
+    }
+
+    renderLanguagePicker = () => {
+        if (this.props.loadingLanguages) {
+            return (
+                <View style={style.loaderContainer}>
+                    <ActivityIndicator size="large"/>
+                    <Text style={style.loadingText}>Loading available languages</Text>
+                </View>
+            )
+        } else {
+            let allPickerItems = this.getAllPickerItem();
+            return (
+                <Picker
+                    selectedValue={this.state.selectedLanguage}
+                    style={{ height: 200, width: '80%', }}
+                    mode="dropdown"
+                    onValueChange={itemValue =>
+                        this.setState({ selectedLanguage: itemValue })
+                    }>
+                    {allPickerItems}
+                </Picker>
+            )
+        }
+    }
+
     onPressContinue = () => {
-        this.props.navigation.replace("Home")
+        // Get translation data from api
+        this.props.callGetTranslation();
+        // this.props.navigation.replace("Home")
     }
 
     getAllPickerItem = () => {
@@ -47,9 +76,7 @@ class SelectLanguage extends React.Component {
     componentDidMount() {
         this.props.callGetAllLanguages();
     }
-    componentDidUpdate() {
-        console.log('lang list', this.props.languageList);
-    }
+
 }
 
 const style = StyleSheet.create({
@@ -60,12 +87,27 @@ const style = StyleSheet.create({
     },
     title: {
         fontSize: 16
+    },
+    loaderContainer: {
+        marginVertical: 16,
+        height: 200,
+        justifyContent:'center'
+    },
+    loadingText: {
+        paddingVertical: 16
+    },
+    loadingTranslationContainer: {
+        justifyContent:'center',
+        alignItems:'center',
+        flex: 1,
     }
 })
 
 const mapStateToProps = state => {
     return {
-        languageList: state.LanguageReducer.languageList
+        languageList: state.LanguageReducer.languageList,
+        loadingLanguages: state.LanguageReducer.loadingLanguages,
+        loadingTranslation: state.LanguageReducer.loadingTranslation
     }
 }
 
@@ -73,6 +115,9 @@ const mapDispatchToProps = dispatch => {
     return {
         callGetAllLanguages: () => {
             dispatch(callGetAllLanguages());
+        },
+        callGetTranslation: (langCode) => {
+            dispatch(callGetTranslation(langCode));
         }
     }
 }

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './containers/home/HomeScreen';
 import SelectLanguage from './containers/language/SelectLanguage';
 import { LogBox } from 'react-native';
+import { navigationRef } from './services/navigation/NavigationService';
 
 
 const HomeStack = createStackNavigator();
@@ -12,7 +13,7 @@ const HomeStack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <HomeStack.Navigator>
         <HomeStack.Screen name="Select Language" component={SelectLanguage}/>
         <HomeStack.Screen name="Home" component={HomeScreen}/>
