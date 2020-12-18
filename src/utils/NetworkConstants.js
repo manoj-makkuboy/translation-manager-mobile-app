@@ -8,4 +8,4 @@ export const HTTP_AUTH_ERROR = 401;
 
 // API End-points
 // export const API_GET_ALL_LANGUAGE = 'getLanguages';
-export const API_GET_ALL_LANGUAGE = '/v1/850cce00';
+export const API_GET_ALL_LANGUAGE = '/v1/73818d92';

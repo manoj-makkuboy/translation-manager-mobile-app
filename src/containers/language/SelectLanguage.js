@@ -7,7 +7,8 @@ import { languageService } from '../../services/language/LanguageService';
 
 class SelectLanguage extends React.Component {
     state = {
-        country: 'uk'
+        country: 'uk',
+        languages: []
     }
     render() {
         return (
@@ -15,9 +16,6 @@ class SelectLanguage extends React.Component {
                 <Text>
                     This is select language screen
                  </Text>
-                <Button onPress={() => {
-                    this.props.navigation.navigate('Home')
-                }} title="Go to Home" />
 
                 <DropDownPicker
                     items={[
@@ -40,7 +38,10 @@ class SelectLanguage extends React.Component {
         )
     }
     componentDidMount() {  
-        languageService.getAllLanguages();
+        languageService.getAllLanguages().then(res => {
+            console.log('res', res);
+           
+        })
     }
 }
 
