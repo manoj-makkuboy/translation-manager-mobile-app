@@ -2,54 +2,79 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
+import { connect } from 'react-redux';
 import { languageService } from '../../services/language/LanguageService';
-
+import { callGetAllLanguages } from './action';
+import {Picker} from '@react-native-picker/picker';
 
 class SelectLanguage extends React.Component {
     state = {
-        country: 'uk',
-        languages: []
+        selectedLanguage: null
     }
     render() {
+        let allPickerItems = this.getAllPickerItem();
         return (
             <View style={style.container}>
-                <Text>
-                    This is select language screen
+                <Text style={style.title}>
+                    Please select your preferred language
                  </Text>
-
-                <DropDownPicker
-                    items={[
-                        { label: 'USA', value: 'usa', icon: () => <Icon name="flag" size={18} color="#900" />, hidden: true },
-                        { label: 'UK', value: 'uk', icon: () => <Icon name="flag" size={18} color="#900" /> },
-                        { label: 'France', value: 'france', icon: () => <Icon name="flag" size={18} color="#900" /> },
-                    ]}
-                    defaultValue={this.state.country}
-                    containerStyle={{ height: 40 }}
-                    style={{ backgroundColor: '#fafafa' }}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    dropDownStyle={{ backgroundColor: '#fafafa' }}
-                    onChangeItem={item => this.setState({
-                        country: item.value
-                    })}
-                />
+                <Picker
+                    selectedValue={this.state.selectedLanguage}
+                    style={{ height: 200, width: '80%',}}
+                    mode="dropdown"
+                    onValueChange={itemValue =>
+                        this.setState({ selectedLanguage: itemValue })
+                    }>
+                    {allPickerItems}
+                </Picker>
+                <Button title="Continue" onPress={this.onPressContinue}/>
             </View>
         )
+
     }
-    componentDidMount() {  
-        languageService.getAllLanguages().then(res => {
-            console.log('res', res);
-           
+
+
+    onPressContinue = () => {
+        this.props.navigation.replace("Home")
+    }
+
+    getAllPickerItem = () => {
+        return this.props.languageList.map(languageItem => {
+            return <Picker.Item key={languageItem} label={languageItem.toUpperCase()} value={languageItem} />
         })
+    }
+
+    componentDidMount() {
+        this.props.callGetAllLanguages();
+    }
+    componentDidUpdate() {
+        console.log('lang list', this.props.languageList);
     }
 }
 
 const style = StyleSheet.create({
     container: {
-        flex:1,
-        alignItems:'center'
+        flex: 1,
+        alignItems: 'center',
+        marginVertical: 16
+    },
+    title: {
+        fontSize: 16
     }
 })
 
-export default SelectLanguage
+const mapStateToProps = state => {
+    return {
+        languageList: state.LanguageReducer.languageList
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        callGetAllLanguages: () => {
+            dispatch(callGetAllLanguages());
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectLanguage);

@@ -4,9 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './containers/home/HomeScreen';
 import SelectLanguage from './containers/language/SelectLanguage';
+import { LogBox } from 'react-native';
 
 
 const HomeStack = createStackNavigator();
+// LogBox.ignoreAllLogs();
 
 const App = () => {
   return (

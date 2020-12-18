@@ -1,4 +1,4 @@
-import { API_GET_ALL_LANGUAGE } from "../../utils/NetworkConstants";
+import { API_GET_ALL_LANGUAGE, API_GET_TRANSLATION } from "../../utils/NetworkConstants";
 import BaseApiService from "../network/BaseApiService";
 
 class LanguageService {
@@ -10,6 +10,10 @@ class LanguageService {
             // .catch(error => {
             //     console.log('error', error);
             // })
+    }
+
+    getTranslation(langCode) {
+        return BaseApiService.get(`${API_GET_TRANSLATION}/${langCode}`)
     }
 }
 

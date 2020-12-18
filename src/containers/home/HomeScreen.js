@@ -6,8 +6,8 @@ class HomeScreen extends React.Component {
     render() {
         return(
             <Button onPress={() => {
-                this.props.navigation.navigate('Home')
-            }} title="Go to Home"/>
+                this.props.navigation.replace('Select Language')
+            }} title="Go Back to Select Language"/>
         );
     }
 };

@@ -24,13 +24,14 @@ const callApi = (requestMethod, url, headers = getHeaders(), data) => {
         method: requestMethod
     };
 
+    console.log(`${HOST_URL}${url}`);
     return fetch(`${HOST_URL}${url}`, requestInit)
         .then(response => {
             console.log('response->', response);
             return handleApiResponse(response)
         })
         .catch(error => {
-            console.log('error-->', error.message);
+            console.log('error122-->', error.message);
             throw error;
         })
 
